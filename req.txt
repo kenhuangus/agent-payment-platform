@@ -1,0 +1,127 @@
+# Technical architecture blueprint for an AI-native payments platform
+
+The platform centers on a zero-trust, policy-driven core that can authenticate AI agents, obtain verifiable consent from their human or organizational owners, orchestrate payments across ACH, wires, and cards, and continuously assess risk and compliance before, during, and after every transaction. The system is decomposed into independently deployable services running on Kubernetes behind an API gateway and service mesh, with an event backbone for reliable, auditable workflows. What follows describes the major components, data contracts, runtime flows, and operational considerations to take this from MVP to production scale.
+
+## Control plane, data plane, and event backbone
+
+Separate the control plane from the data plane. The control plane hosts configuration, policy, model registries, routing tables, and compliance rules. The data plane executes payment flows, identity proofs, fraud scoring, and ledger updates with strict latency budgets. An event backbone such as Kafka or Pulsar provides exactly-once semantics for financial events using the outbox pattern, idempotency keys, and dead-letter queues to make all side effects traceable and replayable. The mesh enforces mTLS, traffic policies, and canary releases; the gateway terminates external TLS, rate-limits agents, and enforces request signing.
+
+## Identity, verification, and consent
+
+Create an Identity Service that issues and verifies cryptographic identities for AI agents and their owners. Support two modes. In enterprise mode, bind agents to the enterprise’s IdP using OAuth 2.0 client credentials or mTLS, and sign access tokens as JWTs with short lifetimes and DPoP or HTTP Signatures to prevent replay. In open ecosystem mode, adopt W3C Decentralized Identifiers and Verifiable Credentials so an agent presents a VC proving it is controlled by a verified entity; verification is done against trusted issuer registries and revocation lists. All identities reference an Ownership Record that links an agent DID or client\_id to a KYB/KYC-verified party. A Consent Service stores explicit spending authorities as versioned, revocable artifacts. Each consent artifact expresses scopes such as permitted rails, MCCs, counterparties, single-transaction and daily limits, velocity caps, and escalation thresholds that require human co-sign. Human approvals use WebAuthn or passkeys to produce strong, phishing-resistant signatures that the platform verifies inline.
+
+Example consent artifact stored as an immutable versioned record:
+
+```json
+{
+  "consent_id": "csnt_01HZX",
+  "agent_id": "did:example:agent123",
+  "owner_party_id": "pty_9f32",
+  "rails": ["ach", "card", "wire"],
+  "counterparties_allow": ["acme-supplier-001"],
+  "limits": {"single_txn_usd": 5000, "daily_usd": 20000, "velocity": {"max_txn_per_hour": 10}},
+  "policy_bundle_version": "2025-09-01.3",
+  "cosign_rule": {"threshold_usd": 2000, "approver_group": "finops"},
+  "created_at": "2025-09-06T14:00:00Z",
+  "revoked": false
+}
+```
+
+## Compliance layer and regtech integrations
+
+Introduce a Compliance Service that orchestrates KYB/KYC onboarding, sanctions screens, adverse media checks, and ongoing monitoring. During onboarding it assembles a dossier with documentary evidence, performs sanction and PEP screening, and runs ultimate-beneficial-owner graph checks. In transaction time it evaluates AML rules such as structuring and unusual corridor usage. Model all rules as policy-as-code with Open Policy Agent so every decision is explainable and reproducible. Generate SAR/STR drafts from templated playbooks, attach evidence hashes from the audit ledger, and expose regulator-ready reports. Jurisdictional constraints such as data residency and travel-rule like messaging are expressed as deploy-time policy bundles that the router consults before choosing a rail.
+
+## Double-entry ledger and balance service
+
+Maintain an append-only, event-sourced ledger storing every movement as balanced journal entries. Each financial event emits a hash chain to a tamper-evident store, and the current balances are derived views in a fast KV store to meet latency goals. The ledger supports multi-currency, multi-entity sub-ledgers, holds, authorizations, and post-settlement adjustments such as ACH returns and chargebacks. Reconciliation jobs match platform entries to bank statements and processor reports using statement parsers for NACHA, ISO 20022 camt/pacs, and card settlement files. Discrepancies raise reconciliation incidents with lineage back to raw events.
+
+Example posting for an ACH payout authorization:
+
+```json
+{
+  "entry_id": "le_8a72",
+  "txn_id": "txn_7c91",
+  "timestamp": "2025-09-06T14:03:11Z",
+  "currency": "USD",
+  "lines": [
+    {"account": "agents:agent123:settlement", "debit": 1000},
+    {"account": "network:ach:awaiting_settlement", "credit": 1000}
+  ],
+  "metadata": {"rail": "ach", "sec_code": "CCD", "odfi": "011000015", "cof": "auth"},
+  "hash": "…",
+  "prev_hash": "…"
+}
+```
+
+## Payment router and rail adapters
+
+Build a Router that decides the execution path per transaction based on consent, policy results, cost, speed, and counterparty requirements. The Router produces a deterministic plan such as authorize, place hold, submit, settle, release hold, and reconcile. Rail Adapters isolate exterior protocols. The ACH Adapter supports API and file-based NACHA flows with ODFI and RDFI mappings, SEC codes, same-day vs next-day windows, and return code handling with automatic retry and representment rules. The Wire Adapter supports Fedwire or SWIFT via sponsor banks, builds ISO 20022 messages, enforces cutoff times, and collects intermediary fee estimates. The Card Adapter integrates with gateways for PAN tokenization, 3-D Secure challenges, and dispute webhooks while keeping the platform out of PCI scope by using vaulted tokens and network tokenization. The Instant Payments Adapter handles FedNow, RTP, and SEPA Instant with pre-funding logic and irrevocable transfer safeguards. All adapters share a common command interface so the Router can swap plans at runtime if a rail is down.
+
+## Risk engine and fraud detection
+
+Position the Risk Engine in-line to produce real-time scores while also running side-band analytics for model improvements. The in-line phase aggregates signals such as agent fingerprint, consent context, behavioral baselines, device and network telemetry, and external risk or consortium feeds. It outputs a score and reasons that the Policy Engine can act on. The side-band phase is a feature store built on streaming joins of ledger events, webhooks, and enrichment tables. Train models on agent-specific patterns like high-frequency micro-payments, tool-driven bursts, and temporal autocorrelation that differ from human patterns. Provide guarded actions such as convert to hold, step-up human co-sign, or block-and-report. Every score includes a decision record with model version, feature snapshot, and SHAP-like attributions to support audits.
+
+## Policy engine and orchestration
+
+Use a dedicated Orchestration Service that executes workflows as state machines with compensations for every step. Policies evaluated by OPA determine whether to proceed, hold, escalate, or deny. Long-running workflows handle rail cutoffs and settlement windows without losing state across deployments. The orchestrator writes all state transitions to the audit ledger and publishes events for observability and analytics, enabling time-travel debugging and precise RPO/RTO objectives.
+
+## Data privacy, security, and key management
+
+Keep cardholder and bank account data out of your environment when possible by using network or gateway tokens. For secrets that must be stored, use an HSM-backed KMS with envelope encryption and hierarchical keys per tenant, per environment, and per data class. Enforce strict data minimization, field-level encryption, and role-based plus attribute-based access controls for operators. Apply differential privacy or redaction in analytics exports to prevent leakage of PII. The mesh enforces mTLS, short-lived service identities, and workload attestation. Routine red-teaming covers prompt-injection and tool-abuse risks specific to AI agents, and the platform validates that any agent-submitted instructions cannot bypass consent or policy checks.
+
+## Developer surface and enterprise tooling
+
+Expose a consistent public API with idempotency guarantees, request signing, and error taxonomies tuned to payment semantics. Provide language SDKs and a sandbox that simulates rail behavior including ACH returns and card chargebacks so teams can test unhappy paths. An Enterprise Console offers real-time monitoring, policy editing with previewed effects, dispute handling, and reconciliation status. Audit search allows queries by agent, counterparty, hash, or time window and returns immutable decision dossiers suitable for regulators and internal audit.
+
+Illustrative API contracts with strict idempotency:
+
+```http
+POST /v1/agents
+Idempotency-Key: 1c2d… 
+{
+  "display_name": "procurement-bot",
+  "owner_party_id": "pty_9f32",
+  "identity_mode": "did",
+  "did_document": { … }
+}
+
+POST /v1/payments/authorize
+Idempotency-Key: 77aa…
+{
+  "agent_id": "did:example:agent123",
+  "amount": {"currency": "USD", "value": 1000},
+  "counterparty": {"type": "ach", "routing_number": "011000015", "account_number_token": "tok_ach_…"},
+  "consent_id": "csnt_01HZX",
+  "memo": "Invoice 8821"
+}
+```
+
+## Observability, reliability, and resilience
+
+Instrument every service with metrics, logs, and distributed traces. Critical SLOs include p99 authorization latency, successful settlement ratio per rail, reconciliation freshness, and false-positive/negative rates for risk. Implement regional redundancy with active-active clusters for stateless services and multi-AZ databases using consensus replication. The ledger’s event log is replicated with quorum writes; snapshots accelerate recovery. Chaos testing validates that partial rail outages degrade gracefully as the Router reroutes or converts to holds. DR plans specify RPO under one minute for committed ledger entries and RTO under one hour for regional failovers.
+
+## Data platform, analytics, and model lifecycle
+
+Stream events to a lakehouse partitioned by event type and date, with governance catalogs that track lineage from raw rail webhooks through reconciled ledger states to compliance reports. The Feature Store computes real-time aggregates like rolling velocity and counterparty entropy. A Model Registry tracks versions, approvals, and rollback procedures, and a Shadow Mode deploys new fraud models in parallel to measure lift before activation. Drift detection alerts on population shifts such as new agent behavior classes. All model decisions are reproducible by storing feature vectors with hashes of training artifacts.
+
+## Certification, standards, and scope management
+
+Design for regulatory and industry frameworks from day one. Keep PCI DSS scope minimal by using tokenization and segregated PCI zones if direct PAN handling is unavoidable. Achieve SOC 2 and ISO 27001 with automated evidence collection from CI/CD, infrastructure as code, and policy-as-code. For messaging and files, use ISO 20022 where supported, NACHA for ACH, and ISO 8583 or gateway APIs for cards. Maintain a cutoff and holiday calendar per rail, and encode settlement calendars so orchestration is deterministic.
+
+## End-to-end transaction flow
+
+A typical payment begins when an agent signs a request with its private key or presents a VC. The gateway validates signatures and enforces rate limits. The Identity and Consent Services attach the current consent artifact and ownership record. The Orchestrator calls the Risk Engine for a real-time score and receives a reasoned decision. The Policy Engine evaluates the score with consent and compliance context; if a co-sign is required the Human Approval Service triggers a WebAuthn ceremony and returns a signed assertion. The Router selects a rail based on policy and optimization and calls the corresponding Adapter, which returns an authorization or submission reference. The Ledger posts a hold or submission entry, the Orchestrator schedules settlement tasks, and the event backbone fans out notifications to the Console, Compliance, and Analytics. Reconciliation later confirms settlement and releases or adjusts holds; any exceptions open incidents and, if thresholds are crossed, generate regulatory report drafts.
+
+## Data model and tenancy
+
+Adopt hard multi-tenancy with tenant-scoped encryption keys, separate service accounts, and per-tenant rate limits. Core entities include Party, Agent, Consent, Account, Counterparty, Transaction, Posting, Decision, and Case. Preserve immutability by treating updates as new versions with effective timestamps. Provide cross-tenant isolation at the database and queue levels, with separate DLQs to avoid data commingling during incident handling.
+
+## MVP, v1, and v2 roadmap
+
+An MVP supports enterprise mode identities, ACH and card rails through a sponsor bank and gateway, a minimal ledger, OPA-based consent and velocity limits, a basic fraud ruleset, and a sandbox. Version 1 adds instant rails, wire support, reconciliation automation, dispute workflows, and explainable ML-based risk. Version 2 introduces DID/VC onboarding, cross-border corridors, consortium risk feeds, and programmable settlement features such as conditional escrow and milestone-based releases.
+
+## Deployment and testing strategy
+
+Everything is provisioned with infrastructure as code. CI/CD enforces signed containers, SLSA provenance, and policy checks before deploy. Contract tests run against rail simulators; chaos tests and game days verify failure modes. Red-teaming focuses on agent-initiated abuse paths, request forgery, and consent evasion. Staging environments mirror production cutoffs and holiday calendars so time-dependent workflows are exercised realistically.
+
+If you want, the next step is a sequence-diagram pack for the four critical flows—agent onboarding, consent issuance and revocation, authorization and hold, and settlement and reconciliation—along with a reference Helm chart that wires the gateway, mesh, event backbone, ledger, router, and adapters into a runnable dev cluster.

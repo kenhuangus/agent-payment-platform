@@ -1,0 +1,67 @@
+openapi: 3.0.0
+info:
+  title: Agent Payment Platform API
+  version: 0.1.0
+paths:
+  /v1/agents:
+    post:
+      summary: Create agent
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Agent'
+      responses:
+        '201':
+          description: Agent created
+  /v1/payments/authorize:
+    post:
+      summary: Authorize payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentAuthorization'
+      responses:
+        '200':
+          description: Payment authorized
+components:
+  schemas:
+    Agent:
+      type: object
+      properties:
+        display_name:
+          type: string
+        owner_party_id:
+          type: string
+        identity_mode:
+          type: string
+        did_document:
+          type: object
+    PaymentAuthorization:
+      type: object
+      properties:
+        agent_id:
+          type: string
+        amount:
+          type: object
+          properties:
+            currency:
+              type: string
+            value:
+              type: number
+        counterparty:
+          type: object
+          properties:
+            type:
+              type: string
+            routing_number:
+              type: string
+            account_number_token:
+              type: string
+        consent_id:
+          type: string
+        memo:
+          type: string

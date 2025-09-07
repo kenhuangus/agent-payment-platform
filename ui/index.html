@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agent Payment Platform - Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-coins"></i>
+                    <span>AgentPay</span>
+                </div>
+                <div class="header-actions">
+                    <div class="user-info">
+                        <i class="fas fa-user-circle"></i>
+                        <span>Agent Dashboard</span>
+                    </div>
+                    <div class="status-indicator">
+                        <span class="status-dot online"></span>
+                        <span>System Online</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="nav-tabs">
+            <button class="tab-button active" data-tab="payments">
+                <i class="fas fa-credit-card"></i>
+                <span>Payments</span>
+            </button>
+            <button class="tab-button" data-tab="accounts">
+                <i class="fas fa-wallet"></i>
+                <span>Accounts</span>
+            </button>
+            <button class="tab-button" data-tab="ledger">
+                <i class="fas fa-book"></i>
+                <span>Ledger</span>
+            </button>
+            <button class="tab-button" data-tab="risk">
+                <i class="fas fa-shield-alt"></i>
+                <span>Risk</span>
+            </button>
+            <button class="tab-button" data-tab="consent">
+                <i class="fas fa-handshake"></i>
+                <span>Consent</span>
+            </button>
+            <button class="tab-button" data-tab="audit">
+                <i class="fas fa-search"></i>
+                <span>Audit</span>
+            </button>
+            <button class="tab-button" data-tab="reports">
+                <i class="fas fa-chart-bar"></i>
+                <span>Reports</span>
+            </button>
+            <button class="tab-button" data-tab="blockchain">
+                <i class="fas fa-link"></i>
+                <span>Hash Chain</span>
+            </button>
+        </nav>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Payments Tab -->
+            <div id="payments-tab" class="tab-content active">
+                <div class="tab-header">
+                    <h2><i class="fas fa-credit-card"></i> Payment Processing</h2>
+                    <p>Multi-rail payment processing with intelligent routing</p>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Payment Initiation -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-plus-circle"></i> Initiate Payment</h3>
+                        </div>
+                        <div class="card-content">
+                            <form class="payment-form">
+                                <div class="form-group">
+                                    <label>Amount (USD)</label>
+                                    <input type="number" step="0.01" placeholder="1500.00" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Counterparty</label>
+                                    <input type="email" placeholder="vendor@example.com" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <input type="text" placeholder="Payment for services" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Payment Rail</label>
+                                    <select required>
+                                        <option value="">Auto-select (Recommended)</option>
+                                        <option value="ach">ACH</option>
+                                        <option value="card">Credit Card</option>
+                                        <option value="wire">Wire Transfer</option>
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn-primary">
+                                    <i class="fas fa-paper-plane"></i> Process Payment
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Payment History -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-history"></i> Recent Payments</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="payment-list">
+                                <div class="payment-item success">
+                                    <div class="payment-info">
+                                        <div class="payment-amount">$1,500.00</div>
+                                        <div class="payment-details">vendor@example.com • Office Supplies</div>
+                                        <div class="payment-meta">ACH • 2 hours ago • TXN-001</div>
+                                    </div>
+                                    <div class="payment-status">
+                                        <span class="status-badge success">Completed</span>
+                                    </div>
+                                </div>
+                                <div class="payment-item processing">
+                                    <div class="payment-info">
+                                        <div class="payment-amount">$750.00</div>
+                                        <div class="payment-details">client@company.com • Consulting</div>
+                                        <div class="payment-meta">Card • Processing • TXN-002</div>
+                                    </div>
+                                    <div class="payment-status">
+                                        <span class="status-badge processing">Processing</span>
+                                    </div>
+                                </div>
+                                <div class="payment-item failed">
+                                    <div class="payment-info">
+                                        <div class="payment-amount">$2,500.00</div>
+                                        <div class="payment-details">supplier@corp.com • Equipment</div>
+                                        <div class="payment-meta">Wire • Failed • TXN-003</div>
+                                    </div>
+                                    <div class="payment-status">
+                                        <span class="status-badge failed">Failed</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Payment Analytics -->
+                    <div class="card full-width">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-pie"></i> Payment Analytics</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="analytics-grid">
+                                <div class="metric">
+                                    <div class="metric-value">$45,230</div>
+                                    <div class="metric-label">Total Processed (30 days)</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">98.7%</div>
+                                    <div class="metric-label">Success Rate</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">2.3s</div>
+                                    <div class="metric-label">Avg Processing Time</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">ACH: 65%</div>
+                                    <div class="metric-label">Primary Rail Usage</div>
+                                </div>
+                            </div>
+                            <canvas id="paymentChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Accounts Tab -->
+            <div id="accounts-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2><i class="fas fa-wallet"></i> Account Management</h2>
+                    <p>Real-time account balances and financial position</p>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Account Balances -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-balance-scale"></i> Account Balances</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="balance-list">
+                                <div class="balance-item">
+                                    <div class="account-info">
+                                        <div class="account-name">Cash Account</div>
+                                        <div class="account-type">Asset</div>
+                                    </div>
+                                    <div class="balance-amount">$15,750.00</div>
+                                </div>
+                                <div class="balance-item">
+                                    <div class="account-info">
+                                        <div class="account-name">Accounts Receivable</div>
+                                        <div class="account-type">Asset</div>
+                                    </div>
+                                    <div class="balance-amount">$3,200.00</div>
+                                </div>
+                                <div class="balance-item">
+                                    <div class="account-info">
+                                        <div class="account-name">Accounts Payable</div>
+                                        <div class="account-type">Liability</div>
+                                    </div>
+                                    <div class="balance-amount">($5,200.00)</div>
+                                </div>
+                                <div class="balance-item">
+                                    <div class="account-info">
+                                        <div class="account-name">Owner's Equity</div>
+                                        <div class="account-type">Equity</div>
+                                    </div>
+                                    <div class="balance-amount">$7,250.00</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Balance Sheet -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-file-invoice-dollar"></i> Balance Sheet</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="balance-sheet">
+                                <div class="sheet-section">
+                                    <h4>Assets</h4>
+                                    <div class="sheet-item">
+                                        <span>Cash</span>
+                                        <span>$15,750.00</span>
+                                    </div>
+                                    <div class="sheet-item">
+                                        <span>Accounts Receivable</span>
+                                        <span>$3,200.00</span>
+                                    </div>
+                                    <div class="sheet-item">
+                                        <span>Inventory</span>
+                                        <span>$8,500.00</span>
+                                    </div>
+                                    <div class="sheet-total">
+                                        <span>Total Assets</span>
+                                        <span>$27,450.00</span>
+                                    </div>
+                                </div>
+
+                                <div class="sheet-section">
+                                    <h4>Liabilities & Equity</h4>
+                                    <div class="sheet-item">
+                                        <span>Accounts Payable</span>
+                                        <span>$5,200.00</span>
+                                    </div>
+                                    <div class="sheet-item">
+                                        <span>Bank Loan</span>
+                                        <span>$15,000.00</span>
+                                    </div>
+                                    <div class="sheet-item">
+                                        <span>Owner's Equity</span>
+                                        <span>$7,250.00</span>
+                                    </div>
+                                    <div class="sheet-total">
+                                        <span>Total Liab. & Equity</span>
+                                        <span>$27,450.00</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Account Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-cogs"></i> Account Actions</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="action-buttons">
+                                <button class="btn-secondary">
+                                    <i class="fas fa-plus"></i> Create Account
+                                </button>
+                                <button class="btn-secondary">
+                                    <i class="fas fa-exchange-alt"></i> Transfer Funds
+                                </button>
+                                <button class="btn-secondary">
+                                    <i class="fas fa-receipt"></i> Reconcile Account
+                                </button>
+                                <button class="btn-secondary">
+                                    <i class="fas fa-history"></i> Balance History
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ledger Tab -->
+            <div id="ledger-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2><i class="fas fa-book"></i> Transaction Ledger</h2>
+                    <p>Double-entry bookkeeping with complete transaction history</p>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Transaction List -->
+                    <div class="card full-width">
+                        <div class="card-header">
+                            <h3><i class="fas fa-list"></i> Recent Transactions</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="transaction-table">
+                                <div class="table-header">
+                                    <div>Date</div>
+                                    <div>Description</div>
+                                    <div>Debit</div>
+                                    <div>Credit</div>
+                                    <div>Balance</div>
+                                </div>
+                                <div class="table-row">
+                                    <div>2025-09-06</div>
+                                    <div>Payment received - Client A</div>
+                                    <div class="debit">$1,500.00</div>
+                                    <div></div>
+                                    <div>$15,750.00</div>
+                                </div>
+                                <div class="table-row">
+                                    <div>2025-09-05</div>
+                                    <div>Office supplies purchase</div>
+                                    <div></div>
+                                    <div class="credit">$250.00</div>
+                                    <div>$14,250.00</div>
+                                </div>
+                                <div class="table-row">
+                                    <div>2025-09-04</div>
+                                    <div>Service revenue</div>
+                                    <div class="debit">$750.00</div>
+                                    <div></div>
+                                    <div>$14,500.00</div>
+                                </div>
+                                <div class="table-row">
+                                    <div>2025-09-03</div>
+                                    <div>Rent payment</div>
+                                    <div></div>
+                                    <div class="credit">$1,200.00</div>
+                                    <div>$13,750.00</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Journal Entry -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-edit"></i> Journal Entry</h3>
+                        </div>
+                        <div class="card-content">
+                            <form class="journal-form">
+                                <div class="form-group">
+                                    <label>Date</label>
+                                    <input type="date" value="2025-09-06" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Description</label>
+                                    <input type="text" placeholder="Transaction description" required>
+                                </div>
+                                <div class="journal-entries">
+                                    <div class="entry-row">
+                                        <select class="account-select" required>
+                                            <option>Cash</option>
+                                            <option>Accounts Receivable</option>
+                                            <option>Accounts Payable</option>
+                                        </select>
+                                        <input type="number" step="0.01" placeholder="Debit" class="debit-input">
+                                        <input type="number" step="0.01" placeholder="Credit" class="credit-input">
+                                        <button type="button" class="remove-entry">×</button>
+                                    </div>
+                                </div>
+                                <button type="button" class="btn-secondary add-entry">
+                                    <i class="fas fa-plus"></i> Add Entry
+                                </button>
+                                <button type="submit" class="btn-primary">
+                                    <i class="fas fa-save"></i> Post Entry
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Trial Balance -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-balance-scale"></i> Trial Balance</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="trial-balance">
+                                <div class="balance-section">
+                                    <h4>Debit Balances</h4>
+                                    <div class="balance-item">
+                                        <span>Cash</span>
+                                        <span>$15,750.00</span>
+                                    </div>
+                                    <div class="balance-item">
+                                        <span>Accounts Receivable</span>
+                                        <span>$3,200.00</span>
+                                    </div>
+                                    <div class="balance-total">
+                                        <span>Total Debits</span>
+                                        <span>$39,950.00</span>
+                                    </div>
+                                </div>
+
+                                <div class="balance-section">
+                                    <h4>Credit Balances</h4>
+                                    <div class="balance-item">
+                                        <span>Accounts Payable</span>
+                                        <span>$5,200.00</span>
+                                    </div>
+                                    <div class="balance-item">
+                                        <span>Owner's Equity</span>
+                                        <span>$7,250.00</span>
+                                    </div>
+                                    <div class="balance-total">
+                                        <span>Total Credits</span>
+                                        <span>$39,950.00</span>
+                                    </div>
+                                </div>
+
+                                <div class="balance-status">
+                                    <span class="status-badge success">Balanced</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Tab -->
+            <div id="risk-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2><i class="fas fa-shield-alt"></i> Risk Management</h2>
+                    <p>Real-time fraud detection and risk evaluation</p>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Risk Dashboard -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-tachometer-alt"></i> Risk Dashboard</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="risk-metrics">
+                                <div class="metric-card">
+                                    <div class="metric-icon low-risk">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="metric-info">
+                                        <div class="metric-value">98.7%</div>
+                                        <div class="metric-label">Low Risk Transactions</div>
+                                    </div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-icon medium-risk">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="metric-info">
+                                        <div class="metric-value">1.2%</div>
+                                        <div class="metric-label">Medium Risk</div>
+                                    </div>
+                                </div>
+                                <div class="metric-card">
+                                    <div class="metric-icon high-risk">
+                                        <i class="fas fa-times-circle"></i>
+                                    </div>
+                                    <div class="metric-info">
+                                        <div class="metric-value">0.1%</div>
+                                        <div class="metric-label">High Risk (Blocked)</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Risk Evaluation -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-search"></i> Risk Evaluation</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="risk-evaluation">
+                                <div class="evaluation-item">
+                                    <div class="evaluation-header">
+                                        <span>Payment Amount</span>
+                                        <span class="risk-score low">Score: 15/100</span>
+                                    </div>
+                                    <div class="evaluation-details">
+                                        <div class="risk-factor">
+                                            <span>Amount vs Average</span>
+                                            <span class="factor-value">Normal</span>
+                                        </div>
+                                        <div class="risk-factor">
+                                            <span>Counterparty History</span>
+                                            <span class="factor-value">Good</span>
+                                        </div>
+                                        <div class="risk-factor">
+                                            <span>Geographic Risk</span>
+                                            <span class="factor-value">Low</span>
+                                        </div>
+                                    </div>
+                                    <div class="evaluation-result">
+                                        <span class="decision approve">✅ APPROVED</span>
+                                    </div>
+                                </div>
+
+                                <div class="evaluation-item">
+                                    <div class="evaluation-header">
+                                        <span>Large Transfer</span>
+                                        <span class="risk-score medium">Score: 65/100</span>
+                                    </div>
+                                    <div class="evaluation-details">
+                                        <div class="risk-factor">
+                                            <span>Amount Threshold</span>
+                                            <span class="factor-value">High</span>
+                                        </div>
+                                        <div class="risk-factor">
+                                            <span>Frequency Pattern</span>
+                                            <span class="factor-value">Unusual</span>
+                                        </div>
+                                        <div class="risk-factor">
+                                            <span>Time of Day</span>
+                                            <span class="factor-value">Normal</span>
+                                        </div>
+                                    </div>
+                                    <div class="evaluation-result">
+                                        <span class="decision review">⚠️ REVIEW REQUIRED</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fraud Alerts -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-exclamation-triangle"></i> Recent Alerts</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="alert-list">
+                                <div class="alert-item high">
+                                    <div class="alert-icon">
+                                        <i class="fas fa-times-circle"></i>
+                                    </div>
+                                    <div class="alert-content">
+                                        <div class="alert-title">Suspicious Large Transaction</div>
+                                        <div class="alert-details">$50,000 transfer to new counterparty</div>
+                                        <div class="alert-time">2 hours ago</div>
+                                    </div>
+                                    <div class="alert-actions">
+                                        <button class="btn-small">Investigate</button>
+                                    </div>
+                                </div>
+
+                                <div class="alert-item medium">
+                                    <div class="alert-icon">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="alert-content">
+                                        <div class="alert-title">Unusual Login Pattern</div>
+                                        <div class="alert-details">Multiple failed attempts from new IP</div>
+                                        <div class="alert-time">4 hours ago</div>
+                                    </div>
+                                    <div class="alert-actions">
+                                        <button class="btn-small">Review</button>
+                                    </div>
+                                </div>
+
+                                <div class="alert-item low">
+                                    <div class="alert-icon">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div>
+                                    <div class="alert-content">
+                                        <div class="alert-title">Velocity Check</div>
+                                        <div class="alert-details">High transaction frequency detected</div>
+                                        <div class="alert-time">6 hours ago</div>
+                                    </div>
+                                    <div class="alert-actions">
+                                        <button class="btn-small">Monitor</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Consent Tab -->
+            <div id="consent-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2><i class="fas fa-handshake"></i> Consent Management</h2>
+                    <p>Payment authorization and consent verification</p>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Active Consents -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-check-circle"></i> Active Consents</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="consent-list">
+                                <div class="consent-item active">
+                                    <div class="consent-header">
+                                        <div class="consent-title">ACH Payments</div>
+                                        <div class="consent-status">
+                                            <span class="status-badge success">Active</span>
+                                        </div>
+                                    </div>
+                                    <div class="consent-details">
+                                        <div class="consent-rule">
+                                            <span>Max Amount:</span>
+                                            <span>$5,000/day</span>
+                                        </div>
+                                        <div class="consent-rule">
+                                            <span>Valid Counterparties:</span>
+                                            <span>All verified vendors</span>
+                                        </div>
+                                        <div class="consent-rule">
+                                            <span>Expires:</span>
+                                            <span>2025-12-31</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="consent-item active">
+                                    <div class="consent-header">
+                                        <div class="consent-title">Card Payments</div>
+                                        <div class="consent-status">
+                                            <span class="status-badge success">Active</span>
+                                        </div>
+                                    </div>
+                                    <div class="consent-details">
+                                        <div class="consent-rule">
+                                            <span>Max Amount:</span>
+                                            <span>$2,500/transaction</span>
+                                        </div>
+                                        <div class="consent-rule">
+                                            <span>Valid Counterparties:</span>
+                                            <span>Approved merchants</span>
+                                        </div>
+                                        <div class="consent-rule">
+                                            <span>Expires:</span>
+                                            <span>2025-12-31</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Consent Requests -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-clock"></i> Pending Requests</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="consent-requests">
+                                <div class="request-item">
+                                    <div class="request-header">
+                                        <div class="request-title">Wire Transfer Authorization</div>
+                                        <div class="request-amount">$25,000.00</div>
+                                    </div>
+                                    <div class="request-details">
+                                        <div class="request-info">
+                                            <span>Counterparty:</span>
+                                            <span>ABC Corporation</span>
+                                        </div>
+                                        <div class="request-info">
+                                            <span>Purpose:</span>
+                                            <span>Equipment Purchase</span>
+                                        </div>
+                                        <div class="request-info">
+                                            <span>Requested:</span>
+                                            <span>2 hours ago</span>
+                                        </div>
+                                    </div>
+                                    <div class="request-actions">
+                                        <button class="btn-approve">Approve</button>
+                                        <button class="btn-reject">Reject</button>
+                                    </div>
+                                </div>
+
+                                <div class="request-item">
+                                    <div class="request-header">
+                                        <div class="request-title">International Transfer</div>
+                                        <div class="request-amount">$15,000.00</div>
+                                    </div>
+                                    <div class="request-details">
+                                        <div class="request-info">
+                                            <span>Counterparty:</span>
+                                            <span>Global Supplier Ltd</span>
+                                        </div>
+                                        <div class="request-info">
+                                            <span>Purpose:</span>
+                                            <span>Import Payment</span>
+                                        </div>
+                                        <div class="request-info">
+                                            <span>Requested:</span>
+                                            <span>4 hours ago</span>
+                                        </div>
+                                    </div>
+                                    <div class="request-actions">
+                                        <button class="btn-approve">Approve</button>
+                                        <button class="btn-reject">Reject</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Consent Analytics -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-line"></i> Consent Analytics</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="consent-metrics">
+                                <div class="metric">
+                                    <div class="metric-value">98.5%</div>
+                                    <div class="metric-label">Approval Rate</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">2.1s</div>
+                                    <div class="metric-label">Avg Response Time</div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">247</div>
+                                    <div class="metric-label">Active Consents</div>
+                                </div>
+                            </div>
+                            <canvas id="consentChart" width="400" height="200"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Audit Tab -->
+            <div id="audit-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2><i class="fas fa-search"></i> Audit Trail</h2>
+                    <p>Comprehensive activity logging and compliance reporting</p>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Audit Events -->
+                    <div class="card full-width">
+                        <div class="card-header">
+                            <h3><i class="fas fa-list"></i> Recent Audit Events</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="audit-table">
+                                <div class="audit-header">
+                                    <div>Timestamp</div>
+                                    <div>Event</div>
+                                    <div>User</div>
+                                    <div>Resource</div>
+                                    <div>Severity</div>
+                                    <div>Details</div>
+                                </div>
+                                <div class="audit-row">
+                                    <div>2025-09-06 23:45</div>
+                                    <div>payment.initiated</div>
+                                    <div>user-123</div>
+                                    <div>pay-001</div>
+                                    <div><span class="severity low">Low</span></div>
+                                    <div>Payment of $1,500 initiated</div>
+                                </div>
+                                <div class="audit-row">
+                                    <div>2025-09-06 23:30</div>
+                                    <div>auth.login.success</div>
+                                    <div>user-456</div>
+                                    <div>session-abc</div>
+                                    <div><span class="severity low">Low</span></div>
+                                    <div>Successful login from 192.168.1.100</div>
+                                </div>
+                                <div class="audit-row">
+                                    <div>2025-09-06 23:15</div>
+                                    <div>account.balance_changed</div>
+                                    <div>system</div>
+                                    <div>acc-cash</div>
+                                    <div><span class="severity medium">Medium</span></div>
+                                    <div>Balance updated: +$1,500.00</div>
+                                </div>
+                                <div class="audit-row">
+                                    <div>2025-09-06 22:45</div>
+                                    <div>auth.login.failed</div>
+                                    <div>unknown</div>
+                                    <div>192.168.1.50</div>
+                                    <div><span class="severity high">High</span></div>
+                                    <div>Failed login attempt</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Compliance Report -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-file-contract"></i> Compliance Report</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="compliance-summary">
+                                <div class="compliance-metric">
+                                    <div class="metric-value">1,250</div>
+                                    <div class="metric-label">Total Events (30 days)</div>
+                                </div>
+                                <div class="compliance-metric">
+                                    <div class="metric-value">50</div>
+                                    <div class="metric-label">Failed Logins</div>
+                                </div>
+                                <div class="compliance-metric">
+                                    <div class="metric-value">15</div>
+                                    <div class="metric-label">Security Alerts</div>
+                                </div>
+                                <div class="compliance-metric">
+                                    <div class="metric-value">98.7%</div>
+                                    <div class="metric-label">Compliance Score</div>
+                                </div>
+                            </div>
+
+                            <div class="compliance-issues">
+                                <h4>Recent Issues</h4>
+                                <div class="issue-item">
+                                    <div class="issue-icon">
+                                        <i class="fas fa-exclamation-triangle"></i>
+                                    </div>
+                                    <div class="issue-content">
+                                        <div class="issue-title">Multiple Failed Login Attempts</div>
+                                        <div class="issue-details">User user-456 had 5 failed login attempts</div>
+                                        <div class="issue-time">2 hours ago</div>
+                                    </div>
+                                </div>
+                                <div class="issue-item">
+                                    <div class="issue-icon">
+                                        <i class="fas fa-info-circle"></i>
+                                    </div>
+                                    <div class="issue-content">
+                                        <div class="issue-title">Unusual Login Pattern</div>
+                                        <div class="issue-details">Login from unusual geographic location</div>
+                                        <div class="issue-time">4 hours ago</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Audit Filters -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-filter"></i> Audit Filters</h3>
+                        </div>
+                        <div class="card-content">
+                            <form class="audit-filters">
+                                <div class="form-group">
+                                    <label>Event Type</label>
+                                    <select>
+                                        <option>All Events</option>
+                                        <option>Authentication</option>
+                                        <option>Payments</option>
+                                        <option>Accounts</option>
+                                        <option>Security</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Severity</label>
+                                    <select>
+                                        <option>All Severities</option>
+                                        <option>Low</option>
+                                        <option>Medium</option>
+                                        <option>High</option>
+                                        <option>Critical</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>User</label>
+                                    <input type="text" placeholder="Filter by user">
+                                </div>
+                                <div class="form-group">
+                                    <label>Date Range</label>
+                                    <input type="date"> to <input type="date">
+                                </div>
+                                <button type="submit" class="btn-primary">
+                                    <i class="fas fa-search"></i> Apply Filters
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Tab -->
+            <div id="reports-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2><i class="fas fa-chart-bar"></i> Financial Reports</h2>
+                    <p>Balance sheets, trial balances, and financial analytics</p>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Balance Sheet -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-file-invoice-dollar"></i> Balance Sheet</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="report-content">
+                                <div class="report-header">
+                                    <h4>ABC Corporation</h4>
+                                    <p>As of September 6, 2025</p>
+                                </div>
+
+                                <div class="report-section">
+                                    <h5>Assets</h5>
+                                    <div class="report-line">
+                                        <span>Cash and Cash Equivalents</span>
+                                        <span>$15,750.00</span>
+                                    </div>
+                                    <div class="report-line">
+                                        <span>Accounts Receivable</span>
+                                        <span>$3,200.00</span>
+                                    </div>
+                                    <div class="report-line">
+                                        <span>Inventory</span>
+                                        <span>$8,500.00</span>
+                                    </div>
+                                    <div class="report-line total">
+                                        <span>Total Assets</span>
+                                        <span>$27,450.00</span>
+                                    </div>
+                                </div>
+
+                                <div class="report-section">
+                                    <h5>Liabilities</h5>
+                                    <div class="report-line">
+                                        <span>Accounts Payable</span>
+                                        <span>$5,200.00</span>
+                                    </div>
+                                    <div class="report-line">
+                                        <span>Bank Loan</span>
+                                        <span>$15,000.00</span>
+                                    </div>
+                                    <div class="report-line total">
+                                        <span>Total Liabilities</span>
+                                        <span>$20,200.00</span>
+                                    </div>
+                                </div>
+
+                                <div class="report-section">
+                                    <h5>Equity</h5>
+                                    <div class="report-line">
+                                        <span>Owner's Equity</span>
+                                        <span>$7,250.00</span>
+                                    </div>
+                                    <div class="report-line total">
+                                        <span>Total Equity</span>
+                                        <span>$7,250.00</span>
+                                    </div>
+                                </div>
+
+                                <div class="report-total">
+                                    <span>Total Liabilities & Equity</span>
+                                    <span>$27,450.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Income Statement -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-chart-line"></i> Income Statement</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="report-content">
+                                <div class="report-header">
+                                    <h4>ABC Corporation</h4>
+                                    <p>For the month ended September 6, 2025</p>
+                                </div>
+
+                                <div class="report-section">
+                                    <h5>Revenue</h5>
+                                    <div class="report-line">
+                                        <span>Service Revenue</span>
+                                        <span>$12,500.00</span>
+                                    </div>
+                                    <div class="report-line">
+                                        <span>Product Sales</span>
+                                        <span>$8,750.00</span>
+                                    </div>
+                                    <div class="report-line total">
+                                        <span>Total Revenue</span>
+                                        <span>$21,250.00</span>
+                                    </div>
+                                </div>
+
+                                <div class="report-section">
+                                    <h5>Expenses</h5>
+                                    <div class="report-line">
+                                        <span>Cost of Goods Sold</span>
+                                        <span>$6,200.00</span>
+                                    </div>
+                                    <div class="report-line">
+                                        <span>Operating Expenses</span>
+                                        <span>$4,800.00</span>
+                                    </div>
+                                    <div class="report-line">
+                                        <span>Rent</span>
+                                        <span>$1,200.00</span>
+                                    </div>
+                                    <div class="report-line total">
+                                        <span>Total Expenses</span>
+                                        <span>$12,200.00</span>
+                                    </div>
+                                </div>
+
+                                <div class="report-net">
+                                    <span>Net Income</span>
+                                    <span>$9,050.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cash Flow -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-money-bill-wave"></i> Cash Flow Statement</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="report-content">
+                                <div class="report-header">
+                                    <h4>ABC Corporation</h4>
+                                    <p>For the month ended September 6, 2025</p>
+                                </div>
+
+                                <div class="report-section">
+                                    <h5>Operating Activities</h5>
+                                    <div class="report-line">
+                                        <span>Net Income</span>
+                                        <span>$9,050.00</span>
+                                    </div>
+                                    <div class="report-line">
+                                        <span>Accounts Receivable</span>
+                                        <span>($1,200.00)</span>
+                                    </div>
+                                    <div class="report-line">
+                                        <span>Accounts Payable</span>
+                                        <span>$800.00</span>
+                                    </div>
+                                    <div class="report-line total">
+                                        <span>Net Cash from Operations</span>
+                                        <span>$8,650.00</span>
+                                    </div>
+                                </div>
+
+                                <div class="report-section">
+                                    <h5>Investing Activities</h5>
+                                    <div class="report-line">
+                                        <span>Purchase of Equipment</span>
+                                        <span>($3,500.00)</span>
+                                    </div>
+                                    <div class="report-line total">
+                                        <span>Net Cash from Investing</span>
+                                        <span>($3,500.00)</span>
+                                    </div>
+                                </div>
+
+                                <div class="report-section">
+                                    <h5>Financing Activities</h5>
+                                    <div class="report-line">
+                                        <span>Bank Loan Proceeds</span>
+                                        <span>$15,000.00</span>
+                                    </div>
+                                    <div class="report-line total">
+                                        <span>Net Cash from Financing</span>
+                                        <span>$15,000.00</span>
+                                    </div>
+                                </div>
+
+                                <div class="report-net">
+                                    <span>Net Change in Cash</span>
+                                    <span>$20,150.00</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Report Actions -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-download"></i> Report Actions</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="action-buttons">
+                                <button class="btn-secondary">
+                                    <i class="fas fa-file-pdf"></i> Export PDF
+                                </button>
+                                <button class="btn-secondary">
+                                    <i class="fas fa-file-excel"></i> Export Excel
+                                </button>
+                                <button class="btn-secondary">
+                                    <i class="fas fa-envelope"></i> Email Report
+                                </button>
+                                <button class="btn-secondary">
+                                    <i class="fas fa-calendar"></i> Schedule Report
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Hash Chain Tab -->
+            <div id="blockchain-tab" class="tab-content">
+                <div class="tab-header">
+                    <h2><i class="fas fa-link"></i> Hash Chain Verification</h2>
+                    <p>Blockchain-style cryptographic integrity for all transactions</p>
+                </div>
+
+                <div class="content-grid">
+                    <!-- Chain Overview -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-sitemap"></i> Hash Chain Overview</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="chain-overview">
+                                <div class="chain-metric">
+                                    <div class="metric-value">1,247</div>
+                                    <div class="metric-label">Total Blocks</div>
+                                </div>
+                                <div class="chain-metric">
+                                    <div class="metric-value">100%</div>
+                                    <div class="metric-label">Chain Integrity</div>
+                                </div>
+                                <div class="chain-metric">
+                                    <div class="metric-value">SHA-256</div>
+                                    <div class="metric-label">Hash Algorithm</div>
+                                </div>
+                                <div class="chain-metric">
+                                    <div class="metric-value">Verified</div>
+                                    <div class="metric-label">Latest Status</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Block Details -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-cube"></i> Latest Block</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="block-details">
+                                <div class="block-info">
+                                    <div class="info-row">
+                                        <span>Block Index:</span>
+                                        <span>1,247</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span>Timestamp:</span>
+                                        <span>2025-09-06 23:45:30</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span>Transactions:</span>
+                                        <span>3</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span>Previous Hash:</span>
+                                        <span class="hash">a1b2c3d4...</span>
+                                    </div>
+                                    <div class="info-row">
+                                        <span>Current Hash:</span>
+                                        <span class="hash">f5e6d7c8...</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Merkle Tree -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-tree"></i> Merkle Tree Verification</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="merkle-tree">
+                                <div class="tree-visualization">
+                                    <div class="tree-level">
+                                        <div class="tree-node root">
+                                            <span>Root Hash</span>
+                                            <div class="hash-display">f5e6d7c8...</div>
+                                        </div>
+                                    </div>
+                                    <div class="tree-level">
+                                        <div class="tree-node">
+                                            <span>AB Hash</span>
+                                            <div class="hash-display">c3b2a1...</div>
+                                        </div>
+                                        <div class="tree-node">
+                                            <span>CD Hash</span>
+                                            <div class="hash-display">d4e5f6...</div>
+                                        </div>
+                                    </div>
+                                    <div class="tree-level">
+                                        <div class="tree-node leaf">
+                                            <span>Txn A</span>
+                                            <div class="hash-display">a1b2c3...</div>
+                                        </div>
+                                        <div class="tree-node leaf">
+                                            <span>Txn B</span>
+                                            <div class="hash-display">b2c3d4...</div>
+                                        </div>
+                                        <div class="tree-node leaf">
+                                            <span>Txn C</span>
+                                            <div class="hash-display">c3d4e5...</div>
+                                        </div>
+                                        <div class="tree-node leaf">
+                                            <span>Txn D</span>
+                                            <div class="hash-display">d4e5f6...</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="verification-status">
+                                    <div class="status-indicator verified">
+                                        <i class="fas fa-check-circle"></i>
+                                        <span>All transactions verified</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chain Verification -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><i class="fas fa-shield-alt"></i> Chain Integrity</h3>
+                        </div>
+                        <div class="card-content">
+                            <div class="integrity-check">
+                                <div class="check-item">
+                                    <div class="check-icon">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="check-content">
+                                        <div class="check-title">Hash Chain Integrity</div>
+                                        <div class="check-details">All 1,247 blocks verified</div>
+                                    </div>
+                                </div>
+                                <div class="check-item">
+                                    <div class="check-icon">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="check-content">
+                                        <div class="check-title">Merkle Tree Verification</div>
+                                        <div class="check-details">Batch verification successful</div>
+                                    </div>
+                                </div>
+                                <div class="check-item">
+                                    <div class="check-icon">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="check-content">
+                                        <div class="check-title">Cryptographic Security</div>
+                                        <div class="check-details">SHA-256 hashing verified</div>
+                                    </div>
+                                </div>
+                                <div class="check-item">
+                                    <div class="check-icon">
+                                        <i class="fas fa-check-circle"></i>
+                                    </div>
+                                    <div class="check-content">
+                                        <div class="check-title">Tamper Detection</div>
+                                        <div class="check-details">No integrity violations detected</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        // Tab switching functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all buttons and contents
+                    tabButtons.forEach(btn => btn.classList.remove('active'));
+                    tabContents.forEach(content => content.classList.remove('active'));
+
+                    // Add active class to clicked button and corresponding content
+                    button.classList.add('active');
+                    const tabId = button.getAttribute('data-tab');
+                    document.getElementById(tabId + '-tab').classList.add('active');
+                });
+            });
+
+            // Initialize charts
+            initializeCharts();
+        });
+
+        function initializeCharts() {
+            // Payment Analytics Chart
+            const paymentCtx = document.getElementById('paymentChart').getContext('2d');
+            new Chart(paymentCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['ACH', 'Card', 'Wire'],
+                    datasets: [{
+                        data: [65, 25, 10],
+                        backgroundColor: ['#4CAF50', '#2196F3', '#FF9800'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+
+            // Consent Analytics Chart
+            const consentCtx = document.getElementById('consentChart').getContext('2d');
+            new Chart(consentCtx, {
+                type: 'line',
+                data: {
+                    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+                    datasets: [{
+                        label: 'Approval Rate',
+                        data: [95, 96, 97, 98, 98, 99],
+                        borderColor: '#4CAF50',
+                        backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                        tension: 0.4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+
+        // Form handling
+        document.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            if (e.target.classList.contains('payment-form')) {
+                // Handle payment form submission
+                const formData = new FormData(e.target);
+                console.log('Processing payment:', Object.fromEntries(formData));
+
+                // Show success message
+                showNotification('Payment initiated successfully!', 'success');
+            } else if (e.target.classList.contains('journal-form')) {
+                // Handle journal entry submission
+                console.log('Posting journal entry');
+
+                // Show success message
+                showNotification('Journal entry posted successfully!', 'success');
+            } else if (e.target.classList.contains('audit-filters')) {
+                // Handle audit filter submission
+                const formData = new FormData(e.target);
+                console.log('Applying audit filters:', Object.fromEntries(formData));
+
+                // Show success message
+                showNotification('Filters applied successfully!', 'info');
+            }
+        });
+
+        // Button click handlers
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-approve')) {
+                showNotification('Consent request approved!', 'success');
+            } else if (e.target.classList.contains('btn-reject')) {
+                showNotification('Consent request rejected!', 'warning');
+            } else if (e.target.classList.contains('btn-small')) {
+                const action = e.target.textContent.toLowerCase();
+                showNotification(`Action: ${action}`, 'info');
+            }
+        });
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.innerHTML = `
+                <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'}"></i>
+                <span>${message}</span>
+                <button class="notification-close">&times;</button>
+            `;
+
+            // Add to page
+            document.body.appendChild(notification);
+
+            // Auto remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 5000);
+
+            // Close button handler
+            notification.querySelector('.notification-close').addEventListener('click', () => {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            });
+        }
+
+        // Add entry functionality for journal
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('add-entry')) {
+                e.preventDefault();
+                const entriesContainer = document.querySelector('.journal-entries');
+                const newEntry = document.createElement('div');
+                newEntry.className = 'entry-row';
+                newEntry.innerHTML = `
+                    <select class="account-select" required>
+                        <option>Cash</option>
+                        <option>Accounts Receivable</option>
+                        <option>Accounts Payable</option>
+                        <option>Revenue</option>
+                        <option>Expense</option>
+                    </select>
+                    <input type="number" step="0.01" placeholder="Debit" class="debit-input">
+                    <input type="number" step="0.01" placeholder="Credit" class="credit-input">
+                    <button type="button" class="remove-entry">×</button>
+                `;
+                entriesContainer.appendChild(newEntry);
+            } else if (e.target.classList.contains('remove-entry')) {
+                e.target.parentNode.remove();
+            }
+        });
+    </script>
+</body>
+</html>
